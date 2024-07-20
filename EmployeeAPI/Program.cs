@@ -21,7 +21,7 @@ namespace EmployeeAPI
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            }   
 
             app.UseHttpsRedirection();
 

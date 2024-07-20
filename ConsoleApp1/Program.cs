@@ -44,7 +44,7 @@ namespace EmployeeUI
                     Console.WriteLine("4. Exit");
                     Console.Write("Choose an option: ");
                     string option = Console.ReadLine();
-
+                      
                     switch (option)
                     {
                         case "1":
