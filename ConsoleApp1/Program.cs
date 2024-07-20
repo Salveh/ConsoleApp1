@@ -1,6 +1,5 @@
 ﻿using System;
 using EmployeeBL;
-using EmployeeDL;
 using EmployeeModels;
 
 namespace EmployeeUI
@@ -9,49 +8,129 @@ namespace EmployeeUI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Employee Management System");
+            EmployeeGetServices getServices = new EmployeeGetServices();
 
-            string name;
-            string id;
-
-            do
+            // Test the database connection
+            if (!getServices.TestConnection())
             {
-                Console.WriteLine("\nPlease enter your employee name:");
-                name = Console.ReadLine();
+                Console.WriteLine("Failed to connect to the database.");
+                return;
+            }
 
-                Console.WriteLine("Please enter your employee ID:");
-                id = Console.ReadLine();
-            } while (!ValidateCredentials(name, id));
+            Console.Write("Enter username: ");
+            string username = Console.ReadLine();
 
-            EmployeeService employeeService = new EmployeeService(new EmployeeDataService());
-            Employee employee = employeeService.GetEmployee(name, id);
+            Console.Write("Enter password: ");
+            string password = Console.ReadLine();
 
-            if (employee != null)
+            if (getServices.ValidateUser(username, password))
             {
-                DisplayEmployeeInfo(employee);
+                Console.WriteLine("Employee Information System:");
+                var employeeList = getServices.GetAllEmployees();
+
+                // Display Employees
+                Console.WriteLine("Employee List:");
+                foreach (var employee in employeeList)
+                {
+                    Console.WriteLine($"ID: {employee.EmployeeId}, Name: {employee.Name}, Job Title: {employee.JobTitle}, Address: {employee.Address}, Salary: {employee.Salary}, Age: {employee.Age}");
+                }
+
+                while (true)
+                {
+                    Console.WriteLine("Options:");
+                    Console.WriteLine("1. Add New Employee");
+                    Console.WriteLine("2. Update Employee Details");
+                    Console.WriteLine("3. Delete Employee");
+                    Console.WriteLine("4. Exit");
+                    Console.Write("Choose an option: ");
+                    string option = Console.ReadLine();
+
+                    switch (option)
+                    {
+                        case "1":
+                            // Add New Employee
+                            Console.Write("Enter Name: ");
+                            string name = Console.ReadLine();
+                            Console.Write("Enter Job Title: ");
+                            string jobTitle = Console.ReadLine();
+                            Console.Write("Enter Address: ");
+                            string address = Console.ReadLine();
+                            Console.Write("Enter Salary: ");
+                            decimal salary = decimal.Parse(Console.ReadLine());
+                            Console.Write("Enter Age: ");
+                            int age = int.Parse(Console.ReadLine());
+
+                            Employee newEmployee = new Employee
+                            {
+                                Name = name,
+                                JobTitle = jobTitle,
+                                Address = address,
+                                Salary = salary,
+                                Age = age
+                            };
+
+                            getServices.AddNewEmployee(newEmployee);
+                            Console.WriteLine("Employee added successfully.");
+                            break;
+
+                        case "2":
+                            // Update Employee Details
+                            Console.Write("Enter Employee ID to update: ");
+                            int employeeIdToUpdate = int.Parse(Console.ReadLine());
+                            var employeeToUpdate = getServices.GetAllEmployees().Find(e => e.EmployeeId == employeeIdToUpdate);
+
+                            if (employeeToUpdate != null)
+                            {
+                                Console.Write($"Enter new Name (current: {employeeToUpdate.Name}): ");
+                                employeeToUpdate.Name = Console.ReadLine();
+                                Console.Write($"Enter new Job Title (current: {employeeToUpdate.JobTitle}): ");
+                                employeeToUpdate.JobTitle = Console.ReadLine();
+                                Console.Write($"Enter new Address (current: {employeeToUpdate.Address}): ");
+                                employeeToUpdate.Address = Console.ReadLine();
+                                Console.Write($"Enter new Salary (current: {employeeToUpdate.Salary}): ");
+                                employeeToUpdate.Salary = decimal.Parse(Console.ReadLine());
+                                Console.Write($"Enter new Age (current: {employeeToUpdate.Age}): ");
+                                employeeToUpdate.Age = int.Parse(Console.ReadLine());
+
+                                getServices.UpdateEmployee(employeeToUpdate);
+                                Console.WriteLine("Employee updated successfully.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Employee not found.");
+                            }
+                            break;
+
+                        case "3":
+                            // Delete Employee
+                            Console.Write("Enter Employee ID to delete: ");
+                            int employeeIdToDelete = int.Parse(Console.ReadLine());
+                            getServices.DeleteEmployee(employeeIdToDelete);
+                            Console.WriteLine("Employee deleted successfully.");
+                            break;
+
+                        case "4":
+                            return;
+
+                        default:
+                            Console.WriteLine("Invalid option. Please try again.");
+                            break;
+                    }
+
+                    // Refresh Employee List
+                    employeeList = getServices.GetAllEmployees();
+                    Console.WriteLine("Updated Employee List:");
+
+                    foreach (var employee in employeeList)
+                    {
+                        Console.WriteLine($"ID: {employee.EmployeeId}, Name: {employee.Name}, Job Title: {employee.JobTitle}, Address: {employee.Address}, Salary: {employee.Salary}, Age: {employee.Age}");
+                    }
+                }
             }
             else
             {
-                Console.WriteLine("\nInvalid employee credentials.");
+                Console.WriteLine("Invalid username or password.");
             }
-        }
-
-        static bool ValidateCredentials(string name, string id)
-        {
-            return name.Equals("SALVE", StringComparison.OrdinalIgnoreCase) && id.Equals("salve001", StringComparison.OrdinalIgnoreCase);
-        }
-
-        static void DisplayEmployeeInfo(Employee employee)
-        {
-            Console.WriteLine("\nEmployee Information:");
-            Console.WriteLine($"Name: {employee.Name}");
-            Console.WriteLine($"ID Number: {employee.IdNumber}");
-            Console.WriteLine($"Job Title: {employee.JobTitle}");
-            Console.WriteLine($"Address: {employee.Address}");
-            Console.WriteLine($"Salary: {employee.Salary:C2}");
-            Console.WriteLine($"Age: {employee.Age}");
-            
-            
         }
     }
 }
