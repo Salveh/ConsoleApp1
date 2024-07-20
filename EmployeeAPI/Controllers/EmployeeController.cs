@@ -43,7 +43,7 @@ namespace EmployeeAPI.Controllers
             return new JsonResult("Employee deleted successfully.");
         }
 
-        [HttpPost("validate")]
+        [HttpPost("validate")]  
         public JsonResult ValidateUser(User request)
         {
             bool isValid = _employeeGetServices.ValidateUser(request.Username, request.Password);
@@ -51,4 +51,4 @@ namespace EmployeeAPI.Controllers
         }
     }
 }
-  
+     

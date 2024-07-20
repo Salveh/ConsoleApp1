@@ -28,7 +28,6 @@ namespace EmployeeUI
                 Console.WriteLine("Employee Information System:");
                 var employeeList = getServices.GetAllEmployees();
 
-                // Display Employees
                 Console.WriteLine("Employee List:");
                 foreach (var employee in employeeList)
                 {
@@ -43,12 +42,12 @@ namespace EmployeeUI
                     Console.WriteLine("3. Delete Employee");
                     Console.WriteLine("4. Exit");
                     Console.Write("Choose an option: ");
-                    string option = Console.ReadLine();
+                    string option = Console.ReadLine();  
                       
                     switch (option)
                     {
                         case "1":
-                            // Add New Employee
+                           
                             Console.Write("Enter Name: ");
                             string name = Console.ReadLine();
                             Console.Write("Enter Job Title: ");
@@ -74,7 +73,7 @@ namespace EmployeeUI
                             break;
 
                         case "2":
-                            // Update Employee Details
+                          
                             Console.Write("Enter Employee ID to update: ");
                             int employeeIdToUpdate = int.Parse(Console.ReadLine());
                             var employeeToUpdate = getServices.GetAllEmployees().Find(e => e.EmployeeId == employeeIdToUpdate);
@@ -102,7 +101,7 @@ namespace EmployeeUI
                             break;
 
                         case "3":
-                            // Delete Employee
+                            
                             Console.Write("Enter Employee ID to delete: ");
                             int employeeIdToDelete = int.Parse(Console.ReadLine());
                             getServices.DeleteEmployee(employeeIdToDelete);
@@ -117,7 +116,7 @@ namespace EmployeeUI
                             break;
                     }
 
-                    // Refresh Employee List
+                    
                     employeeList = getServices.GetAllEmployees();
                     Console.WriteLine("Updated Employee List:");
 

@@ -13,7 +13,6 @@ namespace EmployeeDL
         {
         }
 
-        // Test Database Connection
         public bool TestConnection()
         {
             try
@@ -31,7 +30,6 @@ namespace EmployeeDL
             }
         }
 
-        // User Authentication
         public bool ValidateUser(string username, string password)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -47,7 +45,6 @@ namespace EmployeeDL
             }
         }
 
-        // Get All Employees
         public List<Employee> GetAllEmployees()
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -78,7 +75,7 @@ namespace EmployeeDL
             }
         }
 
-        // Add New Employee
+     
         public void AddNewEmployee(Employee newEmployee)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -96,7 +93,6 @@ namespace EmployeeDL
             }
         }
 
-        // Update Employee
         public void UpdateEmployee(Employee updatedEmployee)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -115,7 +111,6 @@ namespace EmployeeDL
             }
         }
 
-        // Delete Employee
         public void DeleteEmployee(int employeeId)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -129,4 +124,4 @@ namespace EmployeeDL
             }
         }
     }
-}    
+}      
